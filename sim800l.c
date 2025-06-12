@@ -20,7 +20,7 @@ void LCD_string_write(unsigned char *string);
 void ser_init();
 void tx(unsigned char send);
 void tx_str(unsigned char *s);   
-void sms(unsigned char *num1,unsigned char *msg);
+void sms(unsigned char *msg);
 
 void delay_ms(unsigned int ms) {
     unsigned int i, j;
