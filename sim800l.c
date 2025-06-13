@@ -130,11 +130,11 @@ void sms(unsigned char *num1,unsigned char *msg)
 {
     tx_str("AT");
     tx(0x0d);
-    //delay_ms(20);
+    delay_ms(200);
 
     tx_str("AT+CMGF=1");
     tx(0x0d);
-    //delay_ms(20);
+    delay_ms(200);
 
     tx_str("AT+CMGS=");
 		tx('"');
@@ -144,7 +144,7 @@ void sms(unsigned char *num1,unsigned char *msg)
     }
 		tx('"');
     tx(0x0d);
-    //delay_ms(100);
+    delay_ms(500);
 
     while(*msg)
     {
@@ -152,5 +152,5 @@ void sms(unsigned char *num1,unsigned char *msg)
     }
     tx(0x0d);
     tx(0x1a);
-    //delay_ms(30);
+    delay_ms(3000);
 }
