@@ -6,7 +6,7 @@ sbit VIBRATION_SENSOR = P1^0;   // Vibration sensor connected to P1.0
 sbit BUZZER = P1^7; 	//NOW CONNECTED TO RELAY
 
 
-//#define NUMBER "9840007498"
+#define NUMBER 9840007498
 #define LCD_data P2
 #define ON 0
 #define OFF 1
@@ -20,7 +20,7 @@ void LCD_string_write(unsigned char *string);
 void ser_init();
 void tx(unsigned char send);
 void tx_str(unsigned char *s);   
-void sms(unsigned char *msg);
+void sms(unsigned char *num1, unsigned char *msg);
 
 void delay_ms(unsigned int ms) {
     unsigned int i, j;
@@ -54,7 +54,8 @@ void main()
 										LCD_string_write("Hello! Warning!!!");
 										delay_ms(50);
                                         LCD_cmd(0x01);
-                                        sms("Hello! Possible Theft");
+										sms(NUMBER, "Chori vayo hai");
+                                        
 								}
 								
         }
@@ -104,7 +105,7 @@ void LCD_string_write(unsigned char *string)
 void ser_init()
 {
     SCON=0x50;		//0101 0000 :: using Mode 1, receive enable
-    TMOD=0x20;		//0010 0001 :: using timer 1 in mode 2, timer 0 in mode 1
+    TMOD=0x21;		//0010 0001 :: using timer 1 in mode 2, timer 0 in mode 1
     TH1=0xFD;	   	//1111 1101   :: auto reload bit for timer 1 to set baud rate for 9600
     TL1=0xFD;		//1111 1101
     TR1=1;		    //start the timer 1
@@ -125,7 +126,7 @@ void tx_str(unsigned char *s)
     }
 }
 
-void sms(unsigned char *msg)
+void sms(unsigned char *num1,unsigned char *msg)
 {
     tx_str("AT");
     tx(0x0d);
@@ -135,7 +136,13 @@ void sms(unsigned char *msg)
     tx(0x0d);
     //delay_ms(20);
 
-    tx_str("AT+CMGS=”+9779840007498”");
+    tx_str("AT+CMGS=");
+		tx('"');
+    while(*num1)
+    {
+        tx(*num1++);
+    }
+		tx('"');
     tx(0x0d);
     //delay_ms(100);
 
@@ -147,3 +154,12 @@ void sms(unsigned char *msg)
     tx(0x1a);
     //delay_ms(30);
 }
+
+/*unsigned char rx()
+{
+		while(RI==0)
+		{
+			RI = 0;
+		}
+		return SBUF;
+}*/
